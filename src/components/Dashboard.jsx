@@ -25,6 +25,13 @@ const Dashboard = (props) => {
     });
   };
 
+  /**
+   * @param {string | number} id
+   */
+  const deletePost = (id) => {
+    props.deletePostByItem({ id: id });
+  };
+
   return (
     <div>
       <div className="my-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 justify-items-center gap-y-4">
@@ -35,6 +42,7 @@ const Dashboard = (props) => {
               title={post.title}
               content={post.content}
               color={post.color}
+              deletePost={() => deletePost(post.id)}
             />
           );
         })}
@@ -60,4 +68,18 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps)(Dashboard);
+const mapDispatchToProps = (dispatch) => {
+  return {
+    /**
+     * @param {{id: string | number}} payload
+     */
+    deletePostByItem: (payload) => {
+      dispatch({
+        type: 'DELETE_POST',
+        payload: payload,
+      });
+    },
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Dashboard);

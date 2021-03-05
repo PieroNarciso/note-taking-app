@@ -24,6 +24,12 @@ const reducer = (state = initialState, action) => {
         ...state,
         posts: state.posts.concat(action.payload)
       };
+    case 'DELETE_POST':
+      const filteredPosts = state.posts.filter(post => post.id !== action.payload.id);
+      return {
+        ...state,
+        posts: filteredPosts,
+      };
     default:
       return state;
   }
