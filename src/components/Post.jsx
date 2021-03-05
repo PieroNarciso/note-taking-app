@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import Btn from './Base/Btn';
 
@@ -16,16 +16,46 @@ const Post = (props) => {
     }
   };
 
+  const [postHeight, setPostHeight] = useState('h-48');
+  const [overflowText, setOverflowText] = useState('h-32 overflow-hidden');
+
+  const toggleShowFullText = () => {
+    postHeightHandler();
+    overflowTextHandler();
+  };
+
+  const postHeightHandler = () => {
+    setPostHeight((prevState) => {
+      if (prevState === 'h-48') return 'h-auto';
+      return 'h-48';
+    });
+  };
+
+  const overflowTextHandler = () => {
+    setOverflowText(prevState => {
+      if (prevState === '') return 'h-32 overflow-hidden';
+      return '';
+    });
+  };
+
   return (
     <div
-      className={'h-48 p-2 rounded-lg shadow-md w-64 col-span-1 ' + colorCls()}
+      className={
+        'p-2 rounded-lg shadow-md w-64 col-span-1 ' +
+        colorCls() +
+        ' ' +
+        postHeight
+      }
     >
       <div className="flex justify-between">
         <div>
           <h1 className="text-lg font-medium">{props.title}</h1>
         </div>
         <div>
-          <Btn onClick={props.deletePost} className="p-1 text-xs text-gray-500 rounded-full shadow-none hover:text-gray-600">
+          <Btn
+            onClick={props.deletePost}
+            className="p-1 text-xs text-gray-500 rounded-full shadow-none hover:text-gray-600"
+          >
             <svg
               className="w-5 h-5"
               fill="none"
@@ -43,7 +73,9 @@ const Post = (props) => {
           </Btn>
         </div>
       </div>
-      <p className="mt-2">{props.content}</p>
+      <div className={overflowText} onClick={toggleShowFullText}>
+        <p className="break-words">{props.content}</p>
+      </div>
     </div>
   );
 };
