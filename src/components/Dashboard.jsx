@@ -3,19 +3,30 @@ import { connect } from "react-redux";
 
 import Post from "./Post";
 import PostForm from "./PostForm.jsx";
+import AddBtn from './AddBtn';
 
 const Dashboard = (props) => {
   const [showForm, setShowForm] = useState(false);
+  const [rotate, setRotate] = useState('');
 
   const toggleForm = () => {
     setShowForm((prev) => !prev);
+    activateRotate();
   };
   const hideForm = () => {
     setShowForm(false);
+    setRotate('');
+  };
+
+  const activateRotate = () => {
+    setRotate(prev => {
+      if (prev === '') return 'rotate-45';
+      return '';
+    });
   };
 
   return (
-    <div className="relative grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 justify-items-center gap-y-4">
+    <div className="relative grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 justify-items-center gap-y-4">
       {props.posts.map((post) => {
         return (
           <Post
@@ -28,12 +39,7 @@ const Dashboard = (props) => {
       })}
 
       <div>
-        <button
-          onClick={toggleForm}
-          className="fixed flex items-center justify-center w-12 h-12 font-mono text-4xl font-medium text-white bg-yellow-600 rounded-full shadow-lg hover:bg-yellow-700 right-4 bottom-2 focus:outline-none"
-        >
-          +
-        </button>
+        <AddBtn onClick={toggleForm} className={rotate}/>
       </div>
       {showForm ? (
         <div className="fixed">

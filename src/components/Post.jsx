@@ -16,7 +16,7 @@ const Post = (props) => {
   };
   
   return (
-    <div className={"h-48 p-2 rounded-lg shadow-md w-64 " + colorCls()}>
+    <div className={"h-48 p-2 rounded-lg shadow-md w-64 col-span-1 " + colorCls()}>
       <h1 className="text-lg font-medium">{props.title}</h1>
       <p className="mt-2">
         {props.content}
