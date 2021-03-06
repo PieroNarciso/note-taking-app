@@ -1,6 +1,11 @@
-import React from "react";
+import React from 'react';
 
-const AddBtn = (props) => {
+interface Props {
+  onClick: () => void,
+  className: string,
+};
+
+const AddBtn: React.FC<Props> = (props) => {
   return (
     <button
       onClick={props.onClick}

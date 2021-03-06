@@ -1,6 +1,13 @@
 import React from "react";
 
-const TextField = ({ placeholder, value, onChange, label }) => {
+interface Props {
+  placeholder: string;
+  value: string;
+  label: string;
+  onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+};
+
+const TextField: React.FC<Props> = ({ placeholder, value, onChange, label }) => {
   return (
     <div className="flex flex-col">
       <label className="font-medium">{label}</label>

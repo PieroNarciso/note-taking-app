@@ -1,6 +1,12 @@
 import React from "react";
 
-const TextAreaField = ({ value, onChange, placeholder, children }) => {
+interface Props {
+  value: string;
+  placeholder: string;
+  onChange: (event: React.ChangeEvent<HTMLTextAreaElement>) => void;
+};
+
+const TextAreaField: React.FC<Props> = ({ value, onChange, placeholder, children }) => {
   return (
     <div>
       <textarea
@@ -8,8 +14,8 @@ const TextAreaField = ({ value, onChange, placeholder, children }) => {
         value={value}
         onChange={onChange}
         placeholder={placeholder}
-        cols="30"
-        rows="10"
+        cols={30}
+        rows={10}
       >
         {children}
       </textarea>
