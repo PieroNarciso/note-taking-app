@@ -1,35 +1,36 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
 
 import TextField from './Base/TextField';
 import TextAreaField from './Base/TextAreaField';
 import Btn from './Base/Btn';
+import { IPost } from '../types';
 
-const PostForm = (props) => {
+interface Props {
+  addPost: (post: IPost) => void;
+  hideForm: () => void;
+}
+
+const PostForm: React.FC<Props> = (props) => {
   // Manage Post Form
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
-  const [color, setColor] = useState('white');
+  const [color, setColor] = useState<IPost['color']>('white');
 
-  const titleHandler = (event) => {
+  const titleHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     setTitle(event.target.value);
   };
-  const contentHandler = (event) => {
+  const contentHandler = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     setContent(event.target.value);
   };
-  /**
-   * Change color State
-   *
-   * @param {'red' | 'blue' | 'green' | 'white'} color
-   */
-  const changeColor = (color) => {
+
+  const changeColor = (color: IPost['color']) => {
+    if (!color) return;
     setColor(color);
   };
 
-  /**
-   * @param {HTMLFormElement} event
-   */
-  const addPost = (event) => {
+  const addPost = (event: React.FormEvent) => {
     event.preventDefault();
     props.addPost({
       id: Date().toString(),
@@ -105,9 +106,9 @@ const PostForm = (props) => {
   );
 };
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = (dispatch: Dispatch) => {
   return {
-    addPost: (payload) =>
+    addPost: (payload: IPost) =>
       dispatch({
         type: 'ADD_POST',
         payload: payload,

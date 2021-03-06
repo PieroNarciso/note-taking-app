@@ -1,4 +1,12 @@
-const initialState = {
+import { Actions } from './postActions';
+
+import { IPost } from '../types';
+
+export interface IState {
+  posts: IPost[];
+};
+
+const initialState: IState = {
   posts: [
     { id: 1, title: "Post number 1", content: "Hello world!", color: "red" },
     {
@@ -17,7 +25,7 @@ const initialState = {
   ],
 };
 
-const reducer = (state = initialState, action) => {
+const reducer = (state = initialState, action: Actions) => {
   switch (action.type) {
     case "ADD_POST":
       return {

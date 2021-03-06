@@ -1,8 +1,17 @@
 import React, { useState } from 'react';
 
 import Btn from './Base/Btn';
+import { IPost } from '../types';
 
-const Post = (props) => {
+
+interface Props {
+  color: IPost['color'];
+  title: IPost['title'];
+  content: IPost['content'];
+  deletePost: () => void;
+};
+
+const Post: React.FC<Props> = (props) => {
   const colorCls = () => {
     switch (props.color) {
       case 'red':

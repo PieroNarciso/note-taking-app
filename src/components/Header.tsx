@@ -1,6 +1,6 @@
 import React from 'react';
 
-const header = () => {
+const header: React.FC = () => {
   return (
     <header className="flex items-center px-4 py-4 bg-yellow-600 shadow-lg space-x-2">
       <svg

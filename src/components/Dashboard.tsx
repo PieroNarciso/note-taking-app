@@ -1,11 +1,20 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
 
 import Post from './Post';
-import PostForm from './PostForm.jsx';
+import PostForm from './PostForm';
 import AddBtn from './AddBtn';
+import { IState } from '../store/reducer';
 
-const Dashboard = (props) => {
+import { IPost } from '../types';
+
+interface Props {
+  posts: IPost[];
+  deletePostByItem: (payload: { id: IPost['id'] }) => void;
+}
+
+const Dashboard: React.FC<Props> = (props) => {
   const [showForm, setShowForm] = useState(false);
   const [rotate, setRotate] = useState('');
 
@@ -25,10 +34,7 @@ const Dashboard = (props) => {
     });
   };
 
-  /**
-   * @param {string | number} id
-   */
-  const deletePost = (id) => {
+  const deletePost = (id: number | string) => {
     props.deletePostByItem({ id: id });
   };
 
@@ -62,18 +68,15 @@ const Dashboard = (props) => {
   );
 };
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state: IState) => {
   return {
     posts: state.posts,
   };
 };
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = (dispatch: Dispatch) => {
   return {
-    /**
-     * @param {{id: string | number}} payload
-     */
-    deletePostByItem: (payload) => {
+    deletePostByItem: (payload: { id: IPost['id'] }) => {
       dispatch({
         type: 'DELETE_POST',
         payload: payload,
