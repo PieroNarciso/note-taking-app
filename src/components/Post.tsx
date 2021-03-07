@@ -28,7 +28,7 @@ const Post: React.FC<Props> = (props) => {
   };
 
   const [postHeight, setPostHeight] = useState('h-48');
-  const [overflowText, setOverflowText] = useState('h-32 overflow-hidden');
+  const [lineClamp, setLineClamp] = useState('line-clamp-5');
   const [editPost, setEditPost] = useState(false);
 
   const editPostHandler = () => {
@@ -40,7 +40,7 @@ const Post: React.FC<Props> = (props) => {
 
   const toggleShowFullText = () => {
     postHeightHandler();
-    overflowTextHandler();
+    toogleLineClamp();
   };
 
   const postHeightHandler = () => {
@@ -50,10 +50,10 @@ const Post: React.FC<Props> = (props) => {
     });
   };
 
-  const overflowTextHandler = () => {
-    setOverflowText((prevState) => {
-      if (prevState === '') return 'h-32 overflow-hidden';
-      return '';
+  const toogleLineClamp = () => {
+    setLineClamp((prevState) => {
+      if (prevState === 'line-clamp-5') return '';
+      return 'line-clamp-5';
     });
   };
 
@@ -111,8 +111,8 @@ const Post: React.FC<Props> = (props) => {
           </Btn>
         </div>
       </div>
-      <div className={overflowText} onClick={toggleShowFullText}>
-        <p className="break-words">{props.content}</p>
+      <div onClick={toggleShowFullText}>
+        <p className={"break-words " + lineClamp}>{props.content}</p>
       </div>
 
       {editPost ? (
