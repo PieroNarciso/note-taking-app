@@ -2,14 +2,16 @@ import React, { useState } from 'react';
 
 import Btn from './Base/Btn';
 import { IPost } from '../types';
-
+import PostForm from './PostForm';
 
 interface Props {
+  post: IPost;
   color: IPost['color'];
   title: IPost['title'];
   content: IPost['content'];
   deletePost: () => void;
-};
+  editPost?: () => void;
+}
 
 const Post: React.FC<Props> = (props) => {
   const colorCls = () => {
@@ -27,6 +29,14 @@ const Post: React.FC<Props> = (props) => {
 
   const [postHeight, setPostHeight] = useState('h-48');
   const [overflowText, setOverflowText] = useState('h-32 overflow-hidden');
+  const [editPost, setEditPost] = useState(false);
+
+  const editPostHandler = () => {
+    setEditPost(true);
+  };
+  const hideEditPostHandler = () => {
+    setEditPost(false);
+  };
 
   const toggleShowFullText = () => {
     postHeightHandler();
@@ -41,7 +51,7 @@ const Post: React.FC<Props> = (props) => {
   };
 
   const overflowTextHandler = () => {
-    setOverflowText(prevState => {
+    setOverflowText((prevState) => {
       if (prevState === '') return 'h-32 overflow-hidden';
       return '';
     });
@@ -62,8 +72,27 @@ const Post: React.FC<Props> = (props) => {
         </div>
         <div>
           <Btn
+            onClick={editPostHandler}
+            className="p-0 text-xs text-gray-500 rounded-full shadow-none hover:text-gray-600"
+          >
+            <svg
+              className="w-5 h-5"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"
+              ></path>
+            </svg>
+          </Btn>
+          <Btn
             onClick={props.deletePost}
-            className="p-1 text-xs text-gray-500 rounded-full shadow-none hover:text-gray-600"
+            className="p-0 text-xs text-gray-500 rounded-full shadow-none hover:text-gray-600"
           >
             <svg
               className="w-5 h-5"
@@ -85,6 +114,14 @@ const Post: React.FC<Props> = (props) => {
       <div className={overflowText} onClick={toggleShowFullText}>
         <p className="break-words">{props.content}</p>
       </div>
+
+      {editPost ? (
+        <div className="fixed top-0 left-0 w-screen h-screen bg-black bg-opacity-20">
+          <div className="flex items-center justify-center h-screen">
+            <PostForm hideForm={hideEditPostHandler} post={props.post} />
+          </div>
+        </div>
+      ) : null}
     </div>
   );
 };

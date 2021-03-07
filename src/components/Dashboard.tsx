@@ -45,6 +45,7 @@ const Dashboard: React.FC<Props> = (props) => {
           return (
             <Post
               key={post.id}
+              post={post}
               title={post.title}
               content={post.content}
               color={post.color}

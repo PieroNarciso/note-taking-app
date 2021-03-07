@@ -10,5 +10,10 @@ export interface deletePostItem {
   payload: { id: IPost['id'] };
 }
 
+export interface editPostItem {
+  type: 'EDIT_POST';
+  payload: IPost;
+}
 
-export type Actions = addPostItem | deletePostItem;
+
+export type Actions = addPostItem | deletePostItem | editPostItem;
