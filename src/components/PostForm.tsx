@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 
@@ -10,6 +10,8 @@ import { IPost } from '../types';
 interface Props {
   addPost: (post: IPost) => void;
   hideForm: () => void;
+  editPost?: (payload: IPost) => void;
+  post?: IPost;
 }
 
 const PostForm: React.FC<Props> = (props) => {
@@ -17,6 +19,14 @@ const PostForm: React.FC<Props> = (props) => {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [color, setColor] = useState<IPost['color']>('white');
+
+  useEffect(() => {
+    if (props.post) {
+      setTitle(props.post.title);
+      setContent(props.post.content);
+      setColor(props.post.color);
+    }
+  }, [props.post]);
 
   const titleHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     setTitle(event.target.value);
@@ -30,14 +40,36 @@ const PostForm: React.FC<Props> = (props) => {
     setColor(color);
   };
 
+  /**
+   * Edit `content` `title` `color`
+   */
+  const editPostItem = () => {
+    if (props.editPost && props.post) {
+      props.editPost({
+        ...props.post,
+        color: color,
+        title: title,
+        content: content,
+      });
+    }
+  };
+
+  /**
+   * Add Post or Edit existing post if `post {IPost}` in props
+   * is aviable
+   */
   const addPost = (event: React.FormEvent) => {
     event.preventDefault();
-    props.addPost({
-      id: Date().toString(),
-      title: title,
-      content: content,
-      color: color,
-    });
+    if (props.post) {
+      editPostItem();
+    } else {
+      props.addPost({
+        id: Date().toString(),
+        title: title,
+        content: content,
+        color: color,
+      });
+    }
     props.hideForm();
   };
 
@@ -98,7 +130,7 @@ const PostForm: React.FC<Props> = (props) => {
             Cancel
           </Btn>
           <Btn className="font-bold bg-blue-500" onClick={addPost}>
-            Add
+            {props.post ? 'Edit' : 'Add'}
           </Btn>
         </div>
       </form>
@@ -108,11 +140,18 @@ const PostForm: React.FC<Props> = (props) => {
 
 const mapDispatchToProps = (dispatch: Dispatch) => {
   return {
-    addPost: (payload: IPost) =>
+    addPost: (payload: IPost) => {
       dispatch({
         type: 'ADD_POST',
         payload: payload,
-      }),
+      });
+    },
+    editPost: (payload: IPost) => {
+      dispatch({
+        type: 'EDIT_POST',
+        payload: payload,
+      });
+    },
   };
 };
 
